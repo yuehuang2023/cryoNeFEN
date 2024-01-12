@@ -1,1 +1,1 @@
-python train.py /media/sdc/huangyue/cryoDisp/CS-cryonerf/J393/J393_006_particles.cs --datadir /media/sdc/huangyue/cryoDisp/CS-cryonerf/ --mask /media/sdc/huangyue/cryoDisp/CS-cryonerf/J393/J393_006_volume_mask_refine.mrc --lazy  --outdir ./tutorial/
+python train.py ./J393/J393_006_particles.cs --datadir ./ --mask ./J393/J393_006_volume_mask_refine.mrc --lazy  --outdir ./tutorial/
