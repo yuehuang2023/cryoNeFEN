@@ -3,9 +3,18 @@ CryoNeFEN is a neural network based algorithm for cryo-EM reconstruction. In par
 # Installation:
 
 ```
-git clone https://github.com/YueHuang2023/CryoNeFEN.git
+# clone the repo.
+git clone https://github.com/YueHuang2023/cryoNeFEN.git
 cd CryoNeFEN
 
+# Make a conda environment.
+conda create -n cryonefen python=3.9
+conda activate cryonefen
+
+# Install required packages
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install matplotlib
+pip install starfile mrcfile
 ```
 <details>
   <summary> Dependencies (click to expand) </summary>
