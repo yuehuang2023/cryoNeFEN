@@ -1,8 +1,5 @@
 import numpy as np
-import seaborn as sns
 import torch
-import fft
-import mrc
 
 import utils
 
@@ -97,24 +94,6 @@ def print_ctf_params(params):
     log("cs (mm)           : {}".format(params[6]))
     log("w                 : {}".format(params[7]))
     log("Phase shift (deg) : {}".format(params[8]))
-
-
-def plot_ctf(D, Apix, ctf_params):
-    assert len(ctf_params) == 7
-
-    freqs = (
-        np.stack(
-            np.meshgrid(
-                np.linspace(-0.5, 0.5, D, endpoint=False),
-                np.linspace(-0.5, 0.5, D, endpoint=False),
-            ),
-            -1,
-        )
-        / Apix
-    )
-    freqs = freqs.reshape(-1, 2)
-    c = compute_ctf_np(freqs, *ctf_params)
-    sns.heatmap(c.reshape(D, D))
 
 
 def load_ctf_for_training(D, ctf_params_pkl):

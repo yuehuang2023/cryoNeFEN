@@ -7,7 +7,6 @@ import torch.nn as nn
 import lie_tools, utils
 import os 
 import lie_tools
-from pytorch3d.transforms import so3_exp_map
 
 log = utils.log
 

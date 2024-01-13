@@ -1,0 +1,18 @@
+name: cryonefen
+channels:
+  - pytorch
+  - nvidia
+  - defaults
+dependencies:
+  - pip
+  - cudatoolkit=11.6
+  - matplotlib-base=3.7.0=py39he190548_0
+  - matplotlib-inline=0.1.6=py39h06a4308_0
+  - python=3.9.12=h12debd9_1
+  - pytorch=1.13.0=py3.9_cuda11.6_cudnn8.3.2_0
+  - pytorch-cuda=11.6=h867d48c_1
+  - torchvision=0.14.0
+  - pip:
+    - mrcfile==1.4.3
+    - starfile==0.4.5
+    - scipy==1.10.1

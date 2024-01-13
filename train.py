@@ -1,5 +1,4 @@
 import os
-import pickle
 import sys
 from datetime import datetime as dt
 import numpy as np
@@ -14,10 +13,8 @@ import ctf
 from lattice import Lattice
 from models import PositionalDecoder,unparallelize
 import utils
-import matplotlib.pyplot as plt
 import mrc
 import fft
-import lie_tools
 import argparse
 import cryoio
 
@@ -431,7 +428,12 @@ def main(args):
 
     particles = args.particles
     flog(f"Loading dataset from {particles}")
-    datadir = args.datadir
+    if args.datadir is not None: 
+        datadir = args.datadir
+    elif particles.endswith('.cs'):
+        datadir = os.path.dirname(os.path.dirname(os.path.abspath(particles)))
+    else:
+        datadir = None
 
     if args.split is not None:
         assert ind is None, "ERROR: Split dataset with filtered indices"

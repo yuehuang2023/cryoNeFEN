@@ -4,7 +4,6 @@ from torch.utils import data
 import utils
 import cryoio
 import mrc
-import ctf
 import random
 
 log = utils.log

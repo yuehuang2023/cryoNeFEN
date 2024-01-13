@@ -1,17 +1,15 @@
-"""Pytorch models"""
-
+"""
+Adapted from code for
+"CryoDRGN: reconstruction of heterogeneous cryo-EM structures using neural networks" by Zhong et al. (2021)
+https://github.com/ml-struct-bio/cryodrgn/
+"""
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 import lattice
-import lie_tools
 import utils
-import fft
-from pytorch3d.transforms import rotation_6d_to_matrix, matrix_to_rotation_6d
-from scipy.stats import truncnorm
-from functorch import vmap
 
 log = utils.log
 BOX_OFFSETS = [[[i,j,k] for i in [0, 1] for j in [0, 1] for k in [0, 1]]]
