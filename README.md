@@ -3,13 +3,29 @@ CryoNeFEN is a neural network based algorithm for cryo-EM reconstruction. In par
 # Installation:
 
 ```
+git clone https://github.com/YueHuang2023/CryoNeFEN.git
+cd CryoNeFEN
 
 ```
+<details>
+  <summary> Dependencies (click to expand) </summary>
+  
+  ## Dependencies
+  - pytorch 1.13
+  - starfile
+  - mrcfile
+  - matplotlib
 
+</details>
 
+# How to run? 
 
-## Dependencies
-- pytorch 1.13 
-- starfile
-- mrcfile
-- matplotlib
+```
+python train.py -h
+```
+
+Example usage:
+
+```
+python train.py particles.cs --datadir ./ --mask mask.mrc --lazy --outdir ./tutorial/
+```
