@@ -4,7 +4,7 @@ CryoNeFEN is a neural network based algorithm for cryo-EM reconstruction. In par
 
 ```
 # clone the repo.
-git clone https://github.com/YueHuang2023/cryoNeFEN.git
+git clone https://github.com/yuehuang2023/cryoNeFEN.git
 cd CryoNeFEN
 
 # Make a conda environment.
