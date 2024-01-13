@@ -111,7 +111,7 @@ python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC direct
 python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC directory}/xxx_volume_mask_refine.mrc --lazy --outdir ./tutorial/ --split 2
 ```
 Notes:
-1. `{cryoSPARC directory}/xxx_particles.cs` is the `.cs` file processed in step 1.
+1. `{cryoSPARC directory}/xxx_particles.cs` is the `.cs` file processed in **step 1**.
 2. `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC.
 
 We strongly recommend using a mask to accelerate the training. In cryoSPARC, the refined mask can be found from the web interface as the "mask_refine" output.
