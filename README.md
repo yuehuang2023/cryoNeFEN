@@ -172,4 +172,12 @@ python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC direct
 - `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC in step 1.
 
 ## 3. CryoNeFEN analysis
-Once the model has finished training, the generated density maps are saved in `outdir` for further visualization, and analysis.
+Once the model has finished training, the generated density maps are saved in `outdir` for further visualization, and analysis. 
+
+GSFSC of final results can be computed with `python analysis.py`:
+
+Example usage:
+```
+python analysis.py ./tutorial/ --mask {cryoSPARC directory}/xxx_volume_mask_refine.mrc
+```
+Masked FSC curves and reconstructed maps will be plotted. 
