@@ -98,7 +98,7 @@ The required arguments are:
 Additional parameters that are typically set include:
 - `-n`, Number of epochs to train
 - `-b`, Batchsize of the image stack during the training
-- `--lazy`, Lazy loading if full dataset is too large
+- `--lazy`, Lazy loading if the full dataset is too large
 - `--mask`, Mask for accelerating the training
 - `--split`, Split the image stack randomly
 - Neural network architecture settings with `--layers`, `--dim`, `--pe-dim`
@@ -108,8 +108,9 @@ If the golden standard Fourier shell correlation (GSFSC) is required in further 
 python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC directory}/xxx_volume_mask_refine.mrc --lazy --outdir ./tutorial/ --split 1
 python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC directory}/xxx_volume_mask_refine.mrc --lazy --outdir ./tutorial/ --split 2
 ```
-- `{cryoSPARC directory}/xxx_particles.cs` is the `.cs` file processed in step 1.
-- `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC in step 1.
+Notes:
+1. `{cryoSPARC directory}/xxx_particles.cs` is the `.cs` file processed in step 1.
+2. `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC. We strongly recommend adding this argument to accelerate the training.
 
 ## 3. CryoNeFEN analysis
 Once the model has finished training, the generated density maps are saved in `outdir` for further visualization, and analysis. 
