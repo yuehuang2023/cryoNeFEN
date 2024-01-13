@@ -176,6 +176,19 @@ Once the model has finished training, the generated density maps are saved in `o
 
 GSFSC of final results can be computed with `python analysis.py`:
 
+<details><summary><code>python analysis.py -h</code></summary>
+  
+    usage: analysis.py [-h] [--mask mrc] volumes
+
+    positional arguments:
+       volumes     Half-maps directory (.mrc)
+
+    optional arguments:
+      -h, --help  show this help message and exit
+      --mask mrc  FSC mask (.mrc)
+
+</details>
+
 Example usage:
 ```
 python analysis.py ./tutorial/ --mask {cryoSPARC directory}/xxx_volume_mask_refine.mrc
