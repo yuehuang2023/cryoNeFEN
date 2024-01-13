@@ -28,7 +28,7 @@ pip install starfile mrcfile scipy
 </details>
 
 # Quickstart: cryo-EM reconstruction
-## 1. Preprocess image stack
+## 1. Data preprocessing
 Perform a **homogeneous refinement** in cryoSPARC software. We will use the poses and CTF parameters from this "consensus reconstruction". 
 
 - In cryoSPARC, 1) import the particles, 2) run an ab initio reconstruction job, and 3) run a homogeneous refinement job, all with default parameters.
@@ -118,7 +118,7 @@ We strongly recommend using a mask to accelerate the training. In cryoSPARC, the
 
 ![cryoSPARC refined mask](/picture/mask.png 'Mask file path')
 
-## 3. CryoNeFEN analysis
+## 3. Reconstruction analysis
 Once the model has finished training, the generated density maps are saved in `outdir` for further visualization, and analysis. 
 
 GSFSC of final results can be computed with `python analysis.py`:
