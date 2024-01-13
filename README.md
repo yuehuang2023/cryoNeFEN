@@ -33,6 +33,8 @@ Perform a **homogeneous refinement** in cryoSPARC software. We will use the pose
 
 - In cryoSPARC, 1) import the particles, 2) run an ab initio reconstruction job, and 3) run a homogeneous refinement job, all with default parameters.
 - CryoNeFEN extracts image poses from a `.cs` file directly. Copy the path of cryoSPARC's metadata file (`.cs` file) that contains particle poses and CTF parameters.
+
+![cryoSPARC metadata file](./picture/particles.png, "Particle file path")
   
 ## 2. CryoNeFEN training
 When the input image stack (`.cs` file) has been prepared, a cryoNeFEN model can be trained with `python train.py`:
@@ -110,7 +112,11 @@ python train.py {cryoSPARC directory}/xxx_particles.cs  --mask {cryoSPARC direct
 ```
 Notes:
 1. `{cryoSPARC directory}/xxx_particles.cs` is the `.cs` file processed in step 1.
-2. `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC. We strongly recommend adding this argument to accelerate the training.
+2. `{cryoSPARC directory}/xxx_volume_mask_refine.mrc` is the mask refined by cryoSPARC.
+
+We strongly recommend using a mask to accelerate the training. In cryoSPARC, the refined mask can be found from the web interface as the "mask_refine" output.
+
+![cryoSPARC refined mask](./picture/mask.png, 'Mask file path')
 
 ## 3. CryoNeFEN analysis
 Once the model has finished training, the generated density maps are saved in `outdir` for further visualization, and analysis. 
