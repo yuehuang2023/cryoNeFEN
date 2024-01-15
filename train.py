@@ -439,9 +439,11 @@ def main(args):
         assert ind is None, "ERROR: Split dataset with filtered indices"
         if particles.endswith(".cs"):
             raw = np.load(args.particles)
+            assert 1 in raw['alignments3D/split'], "ERROR: Particles file without random subset flag"
             ind = np.argwhere(raw['alignments3D/split'] == (int(args.split)-1))[:,0].tolist()
         elif particles.endswith(".star"):
             s = cryoio.Starfile.load(args.input)
+            assert 'rlnRandomSubset' in s.df, "ERROR: Particles file without random subset flag"
             ind = np.argwhere(s.df['rlnRandomSubset'] == int(args.split))[:,0].tolist()
         else:
             raise RuntimeError("Particle file doesn't contain split indices")

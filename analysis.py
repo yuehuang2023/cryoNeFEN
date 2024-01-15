@@ -94,8 +94,8 @@ def main(args):
     plt.ylim([0, 1])
     plt.xlabel('Frequency')
     plt.ylabel('GSFSC')        
-    plt.savefig(args.volumes + '/gsfsc.png')
-    plt.figure(2, figsize=(9,3))
+    plt.savefig(args.volumes + '/gsfsc.png', bbox_inches='tight')
+    plt.figure(2, figsize=(8,3))
     plt.subplot(131)
     plt.imshow(vol_sum[D//2].transpose())
     plt.title('xslice')
@@ -108,7 +108,7 @@ def main(args):
     plt.imshow(vol_sum[:, :, D//2].transpose())
     plt.title('zslice')
     plt.axis('off')
-    plt.savefig(args.volumes + '/volslice.png')
+    plt.savefig(args.volumes + '/volslice.png', bbox_inches='tight')
     plt.show()
 
 if __name__ == "__main__":
