@@ -55,6 +55,11 @@ def calc_fsc(vol1, vol2):
     x = bins / Dx  # x axis should be spatial frequency in 1/px
     return x, fsc
 
+def fsc2res(freq, fsc, thresh=0.143, Apix=1):
+    idx=np.searchsorted(-fsc,-thresh)
+    res = 1/freq[idx] * Apix
+    return res
+
 def main(args):
     dir1 = args.volumes + '/halfA/'
     dir2 = args.volumes + '/halfB/'
@@ -71,6 +76,10 @@ def main(args):
     assert len(files1) == len(files2), "Must have same number of maps in two halves"
     if args.mask is not None:
         mask, _ = mrc.parse_mrc(args.mask, is_vol=True)
+    else:
+        mask = None
+        log('Warning: make sure the volumes unmasked')
+    Apix = mrc.get_voxelsize(dir1 + files1[0]).x
     fscs = []
     count = 0
     for file1, file2 in zip(files1, files2):
@@ -82,18 +91,24 @@ def main(args):
             freq, fsc = calc_fsc(vol1*mask, vol2*mask)
         else:
             freq, fsc = calc_fsc(vol1, vol2)
-            log('Warning: make sure the volumes unmasked')
         fscs.append(fsc)
     fscs = np.stack(fscs)
-    vol_sum = (vol1+vol2)*mask/2
+    if mask is not None:
+        vol_sum = (vol1+vol2)*mask/2
+    else:
+        vol_sum = (vol1+vol2)/2
     D = vol_sum.shape[0]
+    res = fsc2res(freq, fsc, Apix=Apix)
     utils.save_pkl(fscs, args.volumes + '/fsc.pkl')
     plt.figure(1)
     plt.plot(freq, fsc)
+    plt.axhline(0.143)
     plt.xlim([0, 0.5])
     plt.ylim([0, 1])
+    plt.xticks(np.linspace(0,0.5,6),['DC']+['{:.1f}'.format(1/ele*Apix) for ele in np.linspace(0,0.5,6)[1:]])
     plt.xlabel('Frequency')
-    plt.ylabel('GSFSC')        
+    plt.ylabel('GSFSC')
+    plt.title('Resolution: {:.2f} A'.format(res))
     plt.savefig(args.volumes + '/gsfsc.png', bbox_inches='tight')
     plt.figure(2, figsize=(8,3))
     plt.subplot(131)
@@ -109,6 +124,7 @@ def main(args):
     plt.title('zslice')
     plt.axis('off')
     plt.savefig(args.volumes + '/volslice.png', bbox_inches='tight')
+    log('Save results to {}'.format(args.volumes))
     plt.show()
 
 if __name__ == "__main__":
