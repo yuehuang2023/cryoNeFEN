@@ -17,6 +17,9 @@ def add_args(parser):
     parser.add_argument(
         "--mask", metavar="mrc", type=os.path.abspath, help="FSC mask (.mrc)"
     )
+    parser.add_argument(
+        "--Apix", type=float, help="Angstroms per pixel"
+    )
     return parser
 
 
@@ -80,6 +83,10 @@ def main(args):
         mask = None
         log('Warning: make sure the volumes unmasked')
     Apix = mrc.get_voxelsize(dir1 + files1[0]).x
+    if np.isnan(Apix):
+        Apix = 1.
+    if args.Apix is not None:
+        Apix = args.Apix
     fscs = []
     count = 0
     for file1, file2 in zip(files1, files2):
@@ -102,7 +109,7 @@ def main(args):
     utils.save_pkl(fscs, args.volumes + '/fsc.pkl')
     plt.figure(1)
     plt.plot(freq, fsc)
-    plt.axhline(0.143)
+    plt.axhline(0.143, c='k')
     plt.xlim([0, 0.5])
     plt.ylim([0, 1])
     plt.xticks(np.linspace(0,0.5,6),['DC']+['{:.1f}'.format(1/ele*Apix) for ele in np.linspace(0,0.5,6)[1:]])
