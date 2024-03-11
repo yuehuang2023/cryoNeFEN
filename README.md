@@ -8,18 +8,18 @@ git clone https://github.com/yuehuang2023/cryoNeFEN.git
 cd CryoNeFEN
 
 # Make a conda environment.
-conda create -n cryonefen python=3.9
+conda create -n cryonefen python=3.9 pytorch==1.13.0 torchvision==0.14.0 pytorch-cuda=11.6 -c pytorch -c nvidia
 conda activate cryonefen
 
 # Install required packages
-conda install pytorch==1.13.0 torchvision==0.14.0 pytorch-cuda=11.6 -c pytorch -c nvidia
 conda install matplotlib 
 pip install starfile mrcfile scipy
 ```
+Note: Please ensure that you have met the prerequisites for PyTorch [PyTorch][https://pytorch.org/], the code is tested at version 1.13, 2.0, and 2.1.
 <details>
   <summary> Dependencies (click to expand) </summary>
   
-  - pytorch 1.13
+  - pytorch
   - starfile
   - mrcfile
   - matplotlib
