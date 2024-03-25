@@ -103,7 +103,7 @@ Additional parameters that are typically set include:
 - `--lazy`, Lazy loading if the full dataset is too large
 - `--mask`, Mask for accelerating the training
 - `--split`, Split the image stack randomly
-- Neural network architecture settings
+Neural network architecture settings
 - `--layers`, Number of hidden layers
 - `--dim`, Number of hidden dims
 - `--pe-dim`, Number of sinusoid features in positional encoding
