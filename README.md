@@ -87,7 +87,7 @@ When the input image stack (`.cs` file) has been prepared, a cryoNeFEN model can
       --l-extent L_EXTENT   Coordinate lattice size (if not using positional encoding) (default: 0.5)
       --pe-type {geom_ft,geom_full,geom_lowf,geom_nohighf,linear_lowf,gaussian,none}
                         Type of positional encoding (default: geom_ft)
-      --pe-dim PE_DIM       Num sinusoid features in positional encoding (default: 32)
+      --pe-dim PE_DIM       Number of sinusoid features in positional encoding (default: 32)
       --activation {relu,leaky_relu}
                         Activation (default: relu)
 
@@ -103,7 +103,10 @@ Additional parameters that are typically set include:
 - `--lazy`, Lazy loading if the full dataset is too large
 - `--mask`, Mask for accelerating the training
 - `--split`, Split the image stack randomly
-- Neural network architecture settings with `--layers`, `--dim`, `--pe-dim`
+- Neural network architecture settings
+- `--layers`, Number of hidden layers
+- `--dim`, Number of hidden dims
+- `--pe-dim`, Number of sinusoid features in positional encoding
 
 If the golden standard Fourier shell correlation (GSFSC) is required in further benchmarking, run commands:
 ```
