@@ -1,0 +1,3 @@
+python /code/train.py /data/J393/J393_006_particles.cs --mask /data/J393/J393_006_volume_mask_refine.mrc --lazy --outdir /results/empiar10049/ --split 1 -b 4
+python /code/train.py /data/J393/J393_006_particles.cs --mask /data/J393/J393_006_volume_mask_refine.mrc --lazy --outdir /results/empiar10049/ --split 2 -b 4
+python /code/analysis.py /results/empiar10049/ --mask /data/J393/J393_006_volume_mask_refine.mrc --Apix 1.23
