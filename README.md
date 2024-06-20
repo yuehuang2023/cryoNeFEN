@@ -103,8 +103,8 @@ Additional parameters that are typically set include:
 - `-b`, Batchsize of the image stack during the training
 - `--lazy`, Lazy loading if the full dataset is too large
 - `--mask`, Mask for accelerating the training
-- `--split`, Split the image stack randomly
 - `--symmetry`, Enforce symmetry during training
+- `--split`, Split the image stack randomly
 
 Neural network architecture settings
 - `--layers`, Number of hidden layers
