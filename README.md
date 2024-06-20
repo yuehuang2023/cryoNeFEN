@@ -63,6 +63,7 @@ When the input image stack (`.cs` file) has been prepared, a cryoNeFEN model can
       --log-interval LOG_INTERVAL
                         Logging interval in N_IMGS (default: 100)
       --seed SEED           Random seed
+      --symmetry SYMMETRY   Symmetry for training
 
     Dataset loading:
       --uninvert-data       Do not invert data sign
@@ -103,6 +104,7 @@ Additional parameters that are typically set include:
 - `--lazy`, Lazy loading if the full dataset is too large
 - `--mask`, Mask for accelerating the training
 - `--split`, Split the image stack randomly
+- `--symmetry`, Enforce symmetry during training
 
 Neural network architecture settings
 - `--layers`, Number of hidden layers
