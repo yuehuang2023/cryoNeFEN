@@ -149,4 +149,4 @@ python analysis.py ./tutorial/ --mask {cryoSPARC directory}/xxx_volume_mask_refi
 Masked FSC curves and reconstructed maps will be plotted. 
 
 # Results
-Trained models and reconstructed maps for EMPIAR-10005, EMPIAR-10049, EMPIAR-10076, EMPIAR-10492 are deposited [here](https://drive.google.com/drive/folders/1TyFqTvgbmrpUkP-LBAqB4je9x2Gu5w4T?usp=sharing).
+Trained models and reconstructed maps for [EMPIAR-10005](https://doi.org/10.6019/EMPIAR-10005), [EMPIAR-10049](https://doi.org/10.6019/EMPIAR-10049), [EMPIAR-10076](https://doi.org/10.6019/EMPIAR-10076), [EMPIAR-10492](https://doi.org/10.6019/EMPIAR-10492) are deposited [here](https://drive.google.com/drive/folders/1TyFqTvgbmrpUkP-LBAqB4je9x2Gu5w4T?usp=sharing).
