@@ -192,20 +192,32 @@ def add_args(parser):
 
 
 def generate_symmetry(sym):
+    import re
+    C = re.findall(r'\d+', sym)
+    assert C, "ERROR: Symmetry can't resolve"
+    C = int(''.join(C))
     if sym.startswith("C"):
-        import re
-        C = re.findall(r'\d+', sym)
-        assert C, "ERROR: Symmetry can't resolve"
-        C = int(''.join(C))
+        symmetry=np.array([
+            [[np.cos(2*np.pi/C*i), - np.sin(2*np.pi/C*i),0],
+            [np.sin(2*np.pi/C*i), np.cos(2*np.pi/C*i),0],
+            [0,0,1],]
+            for i in range(C)]).astype(np.float32)
+    elif sym.startswith("D"):
+        symmetry1=np.array([
+            [[np.cos(2*np.pi/C*i), - np.sin(2*np.pi/C*i),0],
+            [np.sin(2*np.pi/C*i), np.cos(2*np.pi/C*i),0],
+            [0,0,1],]
+            for i in range(C)]).astype(np.float32)
+        symmetry2=np.array([
+            [[np.cos(2*np.pi/C*i*2), np.sin(2*np.pi/C*i*2),0],
+            [np.sin(2*np.pi/C*i*2), -np.cos(2*np.pi/C*i*2),0],
+            [0,0,-1],]
+            for i in range(C)]).astype(np.float32)
+        symmetry = np.concatenate([symmetry1, symmetry2])
     else:
         raise NotImplementedError(
                 "Not implemented with this symmetry. Use C1 symmetry instead"
             )
-    symmetry=np.array([
-            [[np.cos(2*np.pi/C*i), - np.sin(2*np.pi/C*i),0],
-            [np.sin(2*np.pi/C*i),np.cos(2*np.pi/C*i),0],
-            [0,0,1],]
-            for i in range(C)]).astype(np.float32)
     return symmetry
 
 
