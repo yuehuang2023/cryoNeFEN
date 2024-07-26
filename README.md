@@ -149,7 +149,7 @@ python analysis.py ./tutorial/ --mask {cryoSPARC directory}/xxx_volume_mask_refi
 Masked FSC curves and reconstructed maps will be plotted. 
 
 # Results
-Trained models and reconstructed maps for [EMPIAR-10005](https://doi.org/10.6019/EMPIAR-10005), [EMPIAR-10049](https://doi.org/10.6019/EMPIAR-10049), [EMPIAR-10076](https://doi.org/10.6019/EMPIAR-10076), [EMPIAR-10492](https://doi.org/10.6019/EMPIAR-10492) are deposited [here](https://drive.google.com/drive/folders/1TyFqTvgbmrpUkP-LBAqB4je9x2Gu5w4T?usp=sharing).
+Trained models and reconstructed maps for [EMPIAR-10005](https://doi.org/10.6019/EMPIAR-10005), [EMPIAR-10049](https://doi.org/10.6019/EMPIAR-10049), [EMPIAR-10076](https://doi.org/10.6019/EMPIAR-10076), [EMPIAR-10492](https://doi.org/10.6019/EMPIAR-10492) are deposited [here](https://zenodo.org/records/12868215).
 
 # Reference
 Huang, Y., Zhu, C., Yang, X. et al. High-resolution real-space reconstruction of cryo-EM structures using a neural field network. Nat Mach Intell (2024). [https://doi.org/10.1038/s42256-024-00870-2](https://doi.org/10.1038/s42256-024-00870-2)
