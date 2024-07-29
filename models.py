@@ -35,7 +35,6 @@ class HetOnlyVAE(nn.Module):
         enc_mask=None,
         enc_type="geom_ft",
         enc_dim=None,
-        domain="space",
         activation=nn.ReLU,
         feat_sigma=None,
     ):
@@ -66,7 +65,6 @@ class HetOnlyVAE(nn.Module):
             lattice.D,
             players,
             pdim,
-            domain,
             enc_type,
             enc_dim,
             activation,
@@ -217,22 +215,16 @@ def get_decoder(
     activation=nn.ReLU,
     feat_sigma=None,
 ):
-    if enc_type == "none":
-        model = ResidLinearMLP(in_dim, layers, dim, 1, activation)
-        ResidLinearMLP.eval_volume = PositionalDecoder.eval_volume  # EW FIXME
-        return model
-    else:
-        model = PositionalDecoder 
-        return model(
-            in_dim,
-            D,
-            layers,
-            dim,
-            activation,
-            enc_type=enc_type,
-            enc_dim=enc_dim,
-            feat_sigma=feat_sigma,
-        )
+    return PositionalDecoder(
+        in_dim,
+        D,
+        layers,
+        dim,
+        activation,
+        enc_type=enc_type,
+        enc_dim=enc_dim,
+        feat_sigma=feat_sigma,
+    )
 
 
 class PositionalDecoder(nn.Module):
@@ -392,13 +384,12 @@ class PositionalDecoder(nn.Module):
         # assert (coords[..., 0:3].abs() - 0.5 < 1e-4).all()
         B = coords.shape[0]
         D = self.D
-        if self.zdim>0:
-            z = coords[...,3:]
-        
+        coords = coords[mask>0]
+
         if self.zdim > 0:
-            output = self.decoder(torch.cat([self.positional_encoding_geom(coords[mask>0]), z], -1))
+            output = self.decoder(torch.cat([self.positional_encoding_geom(coords[..., :3]), coords[..., 3:]], -1))
         else:
-            output = self.decoder(self.positional_encoding_geom(coords[mask>0]))
+            output = self.decoder(self.positional_encoding_geom(coords))
         
         output = torch.zeros([B,D**3],device=coords.device, dtype=output.dtype).masked_scatter(mask>0, output).view(B,D,D,D)
         if ctf is not None:
