@@ -135,6 +135,11 @@ def add_args(parser):
         default=[0, 1],
         help="Data normalization as shift, 1/scale (default: 0, 1)",
     )
+    group.add_argument(
+        "--beta",
+        default = 1,
+        help="KLD loss weight",
+    )
 
     group = parser.add_argument_group("Network Architecture")
     group.add_argument(
@@ -258,6 +263,7 @@ def train_batch(
     trans,
     optim,
     scaler,
+    args,
 ):
     optim.zero_grad()
     model.train()
@@ -279,7 +285,7 @@ def train_batch(
             -0.5 * torch.mean(1 + z_logvar - z_mu.pow(2) - z_logvar.exp(), dim=1), dim=0
         )
         gen_loss = F.mse_loss(y_psf, y)
-        loss =  gen_loss + kld / (mask>0).sum() * B
+        loss =  gen_loss + kld / (mask>0).sum() * B * args.beta
     scaler.scale(loss).backward()
     scaler.step(optim)
     scaler.update()
@@ -410,6 +416,7 @@ def train(data, ctf_params, posetracker, mask, device, ckpt_file=None, outdir=No
                 trans,
                 optim,
                 scaler,
+                args,
             )
             loss_accum += loss * B
             genloss_accum += genloss * B
