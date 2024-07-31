@@ -148,6 +148,20 @@ python analysis.py ./tutorial/ --mask {cryoSPARC directory}/xxx_volume_mask_refi
 ```
 Masked FSC curves and reconstructed maps will be plotted. 
 
+## 4. Heterogeneous reconstruction
+Heterogeneous reconstruction can be trained with 'python train_heter.py':
+
+Example usage:
+```
+python train_heter.py {cryoSPARC directory}/xxx_particles.cs  --mask mask.mrc --zdim 8 --lazy --outdir ./tutorial/
+```
+
+Notes:
+1. The applied mask should contain all the heterogeneous particle volumes. A spherical mask is the default.
+2. Heterogeneous reconstruction requires more GPU memory and training time than standard cryoNeFEN.
+
+After the training, the heterogeneous density maps can be generated with commands in the file 'analysis_heter.ipynb'.
+
 # Results
 Trained models and reconstructed maps for [EMPIAR-10005](https://doi.org/10.6019/EMPIAR-10005), [EMPIAR-10049](https://doi.org/10.6019/EMPIAR-10049), [EMPIAR-10076](https://doi.org/10.6019/EMPIAR-10076), [EMPIAR-10492](https://doi.org/10.6019/EMPIAR-10492) are deposited [here](https://zenodo.org/records/12868215).
 
