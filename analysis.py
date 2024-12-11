@@ -8,6 +8,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import mrc
 import argparse
+import torch
+import torch.nn as nn
+import pickle
+import fft
+from collections import OrderedDict
+from lattice import Lattice
+import itertools
+import torch.nn.functional as F
+from pytorch3d.transforms import *
+import healpy as hp
 
 
 def add_args(parser):
@@ -29,7 +39,6 @@ def add_args(parser):
         help="Output directory to save model",
     )
     return parser
-
 
 def calc_fsc(vol1, vol2):
     """
@@ -73,6 +82,75 @@ def fsc2res(freq, fsc, thresh=0.143, Apix=1):
     else:
         res = 2 * Apix
     return res
+
+def grid_sample_complex(input, grid, **kwargs):
+    output_real = F.grid_sample(input.real, grid, **kwargs)
+    output_imag = F.grid_sample(input.imag, grid, **kwargs)
+    return torch.complex(output_real, output_imag)
+
+def parse_ccp4(file, return_mask = False):
+    vol, header = mrc.parse_mrc(file, is_vol = True)
+    full = np.zeros([header.mz, header.my, header.mx])
+    mask = np.zeros([header.mz, header.my, header.mx])
+    full[header.nzstart:header.nzstart+header.nz, header.nystart:header.nystart+header.ny, header.nxstart:header.nxstart+header.nx] = vol.transpose()
+    mask[header.nzstart:header.nzstart+header.nz, header.nystart:header.nystart+header.ny, header.nxstart:header.nxstart+header.nx] = 1.
+    if return_mask:
+        return full, mask
+    else:
+        return full
+
+def calc_fslc(file1, file2, mask=None, nside=32, device = 'cuda', batch_size = 64, freq_range = None):
+    if device == 'cuda':
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
+    B = batch_size
+    NPIX = hp.nside2npix(nside)
+    theta, phi = hp.pix2ang(nside, torch.arange(NPIX))
+    R = euler_angles_to_matrix(torch.stack([torch.zeros_like(theta), theta, torch.pi - phi], -1), 'ZYZ').to(device=device)
+
+    if file1.endswith('.ccp4'):
+        vol1 = parse_ccp4(file1)
+        vol2 = parse_ccp4(file2)
+    elif file1.endswith('.mrc'):
+        vol1 = mrc.parse_mrc(file1, is_vol=True)[0]
+        vol2 = mrc.parse_mrc(file2, is_vol=True)[0]
+    assert vol1.shape == vol2.shape, "The volumes should have the same shape"
+    if mask is not None:
+        mask = mrc.parse_mrc(mask, is_vol=True)[0]
+        volft1 = torch.tensor(np.fft.fftshift(np.fft.fftn(vol1*mask)), device = device)
+        volft2 = torch.tensor(np.fft.fftshift(np.fft.fftn(vol2*mask)), device = device)
+    else:
+        volft1 = torch.tensor(np.fft.fftshift(np.fft.fftn(vol1)), device = device)
+        volft2 = torch.tensor(np.fft.fftshift(np.fft.fftn(vol2)), device = device)
+    volft1 = fft.symmetrize_3DGPU(volft1)
+    volft2 = fft.symmetrize_3DGPU(volft2)
+    D = vol1.shape[0]
+    lattice = Lattice(D + 1, D + 1, 1., device=device, dtype=torch.float64, endpoint=True)
+    coords = F.pad(lattice.coords_2d,[0, 1])
+    if freq_range is not None:
+        mask_high = lattice.get_circular_mask(freq_range[1]).view(D+1,D+1)
+        mask_low = lattice.get_circular_mask(freq_range[0]).view(D+1,D+1)
+        freq_mask = (~mask_low) & (mask_high)
+    else:
+        freq_mask = lattice.get_circular_mask(D//2).view(D+1,D+1)
+    fslc = []
+    with torch.no_grad():
+        for i in range(NPIX//B + 1):
+            if i == NPIX//B:
+                R_tmp = R[i*B:]
+            else:
+                R_tmp = R[i*B:i*B+B]
+            B_tmp = R_tmp.shape[0]
+            if B_tmp == 0:
+                continue
+            plane = coords[None] @ R_tmp
+            slice1 = grid_sample_complex(volft1.permute(0,3,2,1).repeat(B,1,1,1,1), plane.view(B_tmp,1,1,-1,3), mode='nearest', align_corners=True).view(B_tmp, D+1,D+1) * freq_mask[None]
+            slice2 = grid_sample_complex(volft2.permute(0,3,2,1).repeat(B,1,1,1,1), plane.view(B_tmp,1,1,-1,3), mode='nearest', align_corners=True).view(B_tmp, D+1,D+1) * freq_mask[None]
+            corr = torch.sum(torch.real(slice1 * torch.conj(slice2)), dim = (-1, -2))/(torch.linalg.norm(slice1, dim = (-1, -2)) * torch.linalg.norm(slice2, dim = (-1, -2)))
+            fslc.append(corr.cpu().numpy())
+    fslc = np.concatenate(fslc, -1)
+    return fslc
 
 def main(args):
     if args.outdir is not None:
